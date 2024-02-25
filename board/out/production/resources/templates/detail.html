@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    .container{
+      max-width: 560px;
+    }
+  </style>
+
+</head>
+<body>
+<div class="container">
+
+  <div class="py-5 text-center">
+      <h2>게시글 상세</h2>
+  </div>
+
+  <div>
+    <label for="boardTitle">제목</label>
+    <input type="text" id="boardTitle" name="boardTitle" class="form-control" th:value="${board.boardTitle}" readonly>
+  </div>
+  <div>
+    <label for="boardWriter">작성자</label>
+    <input type="text" id="boardWriter" name="boardWriter" class="form-control" th:value="${board.boardWriter}" readonly>
+  </div>
+  <div>
+    <label for="createdAt">날짜</label>
+    <input type="text" id="createdAt" name="createdAt" class="form-control" th:value="${board.createdAt}" readonly>
+  </div>
+  <div>
+    <label for="boardHits">조회수</label>
+    <input type="text" id="boardHits" name="boardHits" class="form-control" th:value="${board.boardHits}" readonly>
+  </div>
+
+  <div class="table-responsive">
+    <label for="boardContents">내용</label>
+    <table class="table table-bordered" id="boardContents" >
+      <thead class="thead-light">
+      <tr>
+        <td class="align-top" style="white-space:pre;" th:text="${board.boardContents}"></td>
+      </tr>
+      </thead>
+    </table>
+  </div>
+
+  <div th:style="${session.loginId == board.boardWriter ? 'display:block' : 'display:none'}">
+    <label for="board-pass">비밀번호</label>
+    <input type="password" id="board-pass" name="boardPass" class="form-control">
+  </div>
+
+
+
+  <div th:if="${board.fileAttached == 1}">
+    <label for="boardFile">이미지</label>
+    <div th:each="boardFile: ${boardFileList}" class="text-center">
+      <img th:src="@{|/upload/${boardFile.storedFileName}|}" alt="" width="200" height="200" id="boardFile" >
+    </div>
+  </div>
+
+  <hr class="my-4">
+
+  <div class="row">
+    <div class="col">
+      <button class="w-100 btn btn-primary btn-lg" onclick="listReq()">목록</button>
+    </div>
+    <div class="col">
+      <button class="w-100 btn btn-primary btn-lg" onclick="updateReq()"
+              th:style="${session.loginId == board.boardWriter ? 'display:block' : 'display:none'}">수정</button>
+    </div>
+    <div class="col">
+      <button class="w-100 btn btn-primary btn-lg" onclick="deleteReq()"
+              th:style="${session.loginId == board.boardWriter ? 'display:block' : 'display:none'}">삭제</button>
+    </div>
+  </div>
+</div>
+</body>
+<script th:inline="javascript">
+  const listReq = () => {
+    location.href = "/list";
+  }
+  const updateReq = () => {
+    location.href = `/update/[[${board.id}]]`; /*`` : 스크립트 문법이며 변수값을 같이 표현할때 사용*/
+  }
+  const deleteReq = () => {
+    const boardPass = document.getElementById("board-pass").value; /*사용자가 입력한 값을 가져오는 부분*/
+    const passDB = [[${board.boardPass}]]; /*DB에서 가져온 비밀번호*/
+    if (boardPass == passDB) {
+      alert("게시글이 삭제 되었습니다.")
+      location.href = `/delete/[[${board.id}]]`;
+      updateForm.submit();
+    } else {
+      alert("비밀번호가 틀립니다!!");
+    }
+  }
+</script>
+</html>

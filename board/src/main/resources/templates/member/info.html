@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>내 정보</h2>
+<h2 th:text="${session.loginId}">님 환영합니다.</h2>
+
+<!--<button onclick="memberupdate()">내정보 수정하기</button>-->
+<button onclick="logout()">로그아웃</button>
+
+</body>
+<script th:inline="javascript">
+/*  const memberupdate = () =>{
+    location.href = "/member/update";
+  }*/
+  const logout = () =>{
+    location.href = "/member/logout"
+  }
+
+</script>
+</html>

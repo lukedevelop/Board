@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="css/bootstrap.min.css" rel="stylesheet">
+
+<body>
+
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2>게시글 목록</h2>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <a th:text="${session.loginId} + '님 반갑습니다.'" th:style="${session.loginId == null ? 'display:none' : 'display:block'}"></a>
+            <span th:text="'게시글 수: ' + ${findByIdCount}" th:style="${session.loginId == null ? 'display:none' : 'display:block'}"></span>
+            <button onclick="logout()"
+                    class="btn btn-primary btn-sm"
+                    th:style="${session.loginId == null ? 'display:none' : 'display:block'}">로그아웃</button>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+<div class="row">
+    <div class="col">
+        <div class="col">
+            <button class="btn btn-primary float-end"
+                    onclick="location.href='/save';"
+                    th:style="${session.loginId == null ? 'display:none' : 'display:block'}"
+                    type="button">글쓰기
+            </button>
+        </div>
+        <div class="col" th:style="${session.loginId != null ? 'display:none' : 'display:block'}">
+            <button class="btn btn-primary float-end"
+                    onclick="location.href='/member/save'"
+                    type="button">회원가입
+            </button>
+        </div>
+        <div class="col" th:style="${session.loginId != null ? 'display:none' : 'display:block'}">
+            <button class="btn btn-primary float-end"
+                    onclick="location.href='/member/login'"
+                    type="button">로그인
+            </button>
+        </div>
+    </div>
+</div>
+    <hr class="my-4">
+<table class="table">
+    <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성시간</th>
+            <th>조회수</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr th:each="board , i: ${boardList}">
+        <td th:text="${boardList.size  - i.index}"></td>
+        <td>
+            <a th:text="${board.boardTitle}" th:href="@{|/${board.id}|}"></a>
+        </td>
+        <td th:text="${board.boardWriter}"></td>
+        <td th:text="${board.createdAt}"></td>
+        <td th:text="${board.boardHits}"></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+</body>
+<script th:inline="JavaScript">
+    const logout = () =>{
+        location.href = "/member/logout"
+    }
+</script>
+</html>
