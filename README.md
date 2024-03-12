@@ -5,9 +5,11 @@
 
 ## 기술 도구
 - Java17
-- Spring, Springboot 
-- MyBatis,
-- HTML, CSS, JavaScript, Thymeleaf
+- Springboot 3.2.3
+- MyBatis, MySqlworkbench
+- lombok
+- Thymeleaf, bootstrap
+- HTML, CSS, JavaScript
 
 
 ## 주요 기능
